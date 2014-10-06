@@ -7,4 +7,8 @@ class StudentController {
    def test() {
       render "hi!"
    }
+
+   def all() {
+      [students: [new Student(name: 'Bruce')]]
+   }
 }
