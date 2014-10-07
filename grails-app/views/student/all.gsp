@@ -1,9 +1,13 @@
 
 <script src="/demo/js/student/StudentApp.js"></script>
+<script src="/demo/js/student/StudentController.js"></script>
 
 <meta name="layout" content="main"/>
 
-all students: ${students} <br/>
-angular: <script>document.write(window.angular)</script> <br/>
+# students: ${students.size()} <br/>
 
-<div id='content' ng-app='StudentApp' ng-controller='StudentController'>Content...</div>
+<div id='content' ng-app='StudentApp' ng-controller='StudentController'>
+    <p>What?? {{understand}}</p>
+    <input type='text' ng-model='inputValue' />
+    {{inputValue}}
+</div>
