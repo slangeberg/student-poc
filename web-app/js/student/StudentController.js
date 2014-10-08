@@ -7,7 +7,7 @@ app.controller("StudentController", ['$scope','$http', '$log', function($scope, 
     $log.info("$http: ", $http);
     $log.info($http.get)
 
-    $http.get('/demo/student/all')
+    $http.get('/demo/student/data/')
         .success(function(data, status, headers, config) {
             // this callback will be called asynchronously
             // when the response is available
