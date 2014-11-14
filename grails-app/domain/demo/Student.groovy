@@ -5,5 +5,6 @@ class Student {
     static constraints = {
     }
 
-   String name
+    String name
+    Integer status
 }
