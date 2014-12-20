@@ -7,8 +7,8 @@ class BootStrap {
        if( Environment.DEVELOPMENT == Environment.current ){
           if(Student.count() == 0){
              [
-                new Student(name: "Bruce Almighty"),
-                new Student(name: "Devin Notsomuch")
+                new Student(name: "Bruce Almighty", status: 1),
+                new Student(name: "Devin Notsomuch", status: 1)
 
              ]*.save(flush: true, failOnError: true)
           }

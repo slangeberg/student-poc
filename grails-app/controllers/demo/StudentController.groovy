@@ -13,7 +13,7 @@ class StudentController {
    }
 
    def all() {
-      [students: [new Student(name: 'Bruce'), new Student(id:-1, name: "Uh oh!!")]]
+      [students: Student.list()]
    }
 
    // Cheap REST GET
