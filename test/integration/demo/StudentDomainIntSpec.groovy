@@ -129,7 +129,9 @@ class StudentDomainIntSpec extends IntegrationSpec {
             type == 'RP'
             student {
                 survey {
-                    items.size() > 2
+                    items {
+                        attributes.size() > 2
+                    }
                 }
             }
         }
@@ -138,7 +140,7 @@ class StudentDomainIntSpec extends IntegrationSpec {
 
         expect:
         s.size() == 1
-        s.find { it.id ==  student2.id }
+        s.find { it.id ==  student3.id }
     }
 
     def "Can rule out student with profile type and bad item key"() {
@@ -155,10 +157,9 @@ class StudentDomainIntSpec extends IntegrationSpec {
             }
         }
         .list()
-        List<Student> s = p.collect { it.student }
 
         expect:
-        s.size() == 0
+        p.size() == 0
     }
 
     def "Can find student with profile type and item key/value pair"() {
