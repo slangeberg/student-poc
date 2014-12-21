@@ -1,6 +1,8 @@
 package demo
 
 import grails.plugin.spock.IntegrationSpec
+import org.hibernate.criterion.CriteriaSpecification
+import spock.lang.Ignore
 import spock.lang.Shared
 
 /**
@@ -12,76 +14,84 @@ class StudentDomainIntSpec extends IntegrationSpec {
     Student student1, student2, student3, student3AP, student4, orphan
 
     def setupSpec() {
-        student1 = new Student(name: 'student1')
-            .save(failOnError: true, flush:true)
-        student2 = new Student(name: 'student2', survey: new Survey(
-            items: [
-                new SurveyItem(
-                    attributes: [
-                        new ItemAttribute(key: 'myKey', value: 'student1Val'),
-                        new ItemAttribute(key: 'myKey2', value: 'student1Val')
-                    ]
-                )
-            ]
-        ))
-            .save(failOnError: true, flush:true)
-        student3 = new Student(name: 'student3', survey: new Survey(
-            items: [
-                new SurveyItem(
-                    attributes: [
-                        new ItemAttribute(key: 'myKey', value: 'student3Val'),
-                        new ItemAttribute(key: 'myKey2', value: 'student3Val2'),
-                        new ItemAttribute(key: 'anotherKey', value: 'student3Val3')
-                    ]
-                )
-            ]
-        ))
-            .save(failOnError: true, flush:true)
-        student3AP = new Student(name: 'student3AP', survey: new Survey(
-            items: [
-                new SurveyItem(
-                    attributes: [
-                        new ItemAttribute(key: 'myKey', value: 'student3Val'),
-                        new ItemAttribute(key: 'myKey2', value: 'student3Val2'),
-                        new ItemAttribute(key: 'anotherKey', value: 'student3Val3')
-                    ]
-                )
-            ]
-        ))
-            .save(failOnError: true, flush:true)
-        student4 = new Student(name: 'student teacher1', survey: new Survey(
-            items: [
-                new SurveyItem(
-                    attributes: [
-                        new ItemAttribute(key: 'myKey', value: 'student4Val'),
-                        new ItemAttribute(key: 'myKey2', value: 'student4Val2')
-                    ]
-                )
-            ]
-        ))
-            .save(failOnError: true, flush:true)
+        student1 = new Student(username: 'student1')
+            .save(failOnError: true, flush: true)
+
+        student2 = new Student(username: 'student Webb',
+            survey: new Survey(
+                items: [
+                    new SurveyItem(
+                        attributes: [
+                            new ItemAttribute(key: 'studiedHard', value: 'true'),
+                            new ItemAttribute(key: 'myKey', value: 'student1Val'),
+                            new ItemAttribute(key: 'myKey2', value: 'student1Val')
+                        ]
+                    )
+                ]
+            ))
+            .save(failOnError: true, flush: true)
+        student3 = new Student(username: 'student3',
+            survey: new Survey(
+                items: [
+                    new SurveyItem(
+                        attributes: [
+                            new ItemAttribute(key: 'myKey', value: 'student3Val'),
+                            new ItemAttribute(key: 'myKey2', value: 'student3Val2'),
+                            new ItemAttribute(key: 'anotherKey', value: 'student3Val3')
+                        ]
+                    )
+                ]
+            ))
+            .save(failOnError: true, flush: true)
+        student3AP = new Student(username: 'student3AP',
+            survey: new Survey(
+                items: [
+                    new SurveyItem(
+                        attributes: [
+                            new ItemAttribute(key: 'myKey', value: 'student3Val'),
+                            new ItemAttribute(key: 'myKey2', value: 'student3Val2'),
+                            new ItemAttribute(key: 'anotherKey', value: 'student3Val3')
+                        ]
+                    )
+                ]
+            ))
+            .save(failOnError: true, flush: true)
+        student4 = new Student(username: 'student Weber',
+            survey: new Survey(
+                items: [
+                    new SurveyItem(
+                        attributes: [
+                            new ItemAttribute(key: 'studiedHard', value: 'false'),
+                            new ItemAttribute(key: 'myKey', value: 'student4Val'),
+                            new ItemAttribute(key: 'myKey2', value: 'student4Val2'),
+                            new ItemAttribute(key: 'aNewKey', value: 'student4Val3')
+                        ]
+                    )
+                ]
+            ))
+            .save(failOnError: true, flush: true)
 
         //no profile
-        orphan = new Student(name: 'orphan1')
-            .save(failOnError: true, flush:true)
+        orphan = new Student(username: 'orphan1')
+            .save(failOnError: true, flush: true)
 
         // AP Type
         new Profile(student: student1, type: 'AP')
-            .save(failOnError: true, flush:true)
+            .save(failOnError: true, flush: true)
         new Profile(student: student3AP, type: 'AP')
-            .save(failOnError: true, flush:true)
+            .save(failOnError: true, flush: true)
 
         // RP type
         new Profile(student: student2, type: 'RP')
-            .save(failOnError: true, flush:true)
+            .save(failOnError: true, flush: true)
         new Profile(student: student3, type: 'RP')
-            .save(failOnError: true, flush:true)
+            .save(failOnError: true, flush: true)
         new Profile(student: student4, type: 'RP')
-            .save(failOnError: true, flush:true)
+            .save(failOnError: true, flush: true)
 
         // no student
         new Profile(type: 'BAD')
-            .save(failOnError: true, flush:true)
+            .save(failOnError: true, flush: true)
     }
 
     def "Can find students"() {
@@ -117,11 +127,11 @@ class StudentDomainIntSpec extends IntegrationSpec {
 
         expect:
         s.size() == 5
-        s.find { it.id ==  student1.id }
-        s.find { it.id ==  student2.id }
-        s.find { it.id ==  student3.id }
-        s.find { it.id ==  student3AP.id }
-        s.find { it.id ==  student4.id }
+        s.find { it.id == student1.id }
+        s.find { it.id == student2.id }
+        s.find { it.id == student3.id }
+        s.find { it.id == student3AP.id }
+        s.find { it.id == student4.id }
     }
 
     def "Can find student with profile type and has survey items"() {
@@ -130,7 +140,7 @@ class StudentDomainIntSpec extends IntegrationSpec {
             student {
                 survey {
                     items {
-                        attributes.size() > 2
+                        attributes.size() > 3
                     }
                 }
             }
@@ -140,7 +150,7 @@ class StudentDomainIntSpec extends IntegrationSpec {
 
         expect:
         s.size() == 1
-        s.find { it.id ==  student3.id }
+        s.find { it.id == student4.id }
     }
 
     def "Can rule out student with profile type and bad item key"() {
@@ -168,7 +178,9 @@ class StudentDomainIntSpec extends IntegrationSpec {
             student {
                 survey {
                     items {
-                        attributes { key == 'myKey' && value == 'student3Val' }
+                        attributes {
+                            key == 'myKey' && value == 'student3Val'
+                        }
                     }
                 }
             }
@@ -178,6 +190,68 @@ class StudentDomainIntSpec extends IntegrationSpec {
 
         expect:
         s.size() == 1
-        s.find { it.id ==  student3.id }
+        s.find { it.id == student3.id }
+    }
+
+    def "Can find student by profile type and name"() {
+        List<Profile> p = Profile.where {
+            type == 'RP'
+            student {
+                username =~ '%web%'
+            }
+        }
+        .list()
+        List<Student> s = p.collect { it.student }
+
+        expect:
+        s.size() == 2
+        s.find { it.id == student2.id }
+        s.find { it.id == student4.id }
+    }
+
+    def "Can find student by profile type, name, and item criteria"() {
+        List<Profile> p = Profile.where {
+            type == 'RP'
+            student {
+                username =~ '%web%'
+                survey {
+                    items {
+                        attributes {
+                            key == 'aNewKey' && value == 'student4Val3'
+                        }
+                    }
+                }
+            }
+        }
+        .list()
+        List<Student> s = p.collect { it.student }
+
+        expect:
+        s.size() == 1
+        s.find { it.id == student4.id }
+    }
+
+    @Ignore("Still suffering from inner join issue as seen in original SQL!")
+    def "Can find student by profile type, name, and multiple item criteria"() {
+        List<Profile> p = Profile.where {
+            type == 'RP'
+            student {
+                username =~ '%web%'
+                survey {
+                    items {
+                        attributes {
+                            key == 'aNewKey' && value == 'student4Val3'
+                            key == 'studiedHard' && value == 'false'
+                        }
+                    }
+                }
+            }
+        }
+        .list()
+        List<Student> s = p.collect { it.student }
+
+        expect:
+        s.size() == 1
+        s.find { it.id == student4.id }
     }
 }

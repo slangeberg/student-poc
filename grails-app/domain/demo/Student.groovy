@@ -7,7 +7,7 @@ class Student {
         survey nullable: true
     }
 
-    String name
+    String username
     Integer status
 
 //    Profile profile

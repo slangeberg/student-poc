@@ -8,10 +8,10 @@ class StudentService {
 
         println "StudentService.update() - index: $index, targetId: $id"
 
-        student.name = "conc-$index"
+        student.username = "conc-$index"
         student.status = index % 2 == 0 ? 0 : 1
 
-        println "update() { $index, name: ${student.name}, status: ${student.status} }"
+        println "update() { $index, name: ${student.username}, status: ${student.status} }"
 
         student.save(flush: true, failOnError: true)
         student
@@ -23,10 +23,10 @@ class StudentService {
 
         log.info "StudentService.updateWithLock() - index: $index, targetId: $id"
 
-        student.name = "conc-$index"
+        student.username = "conc-$index"
         student.status = index % 2 == 0 ? 0 : 1
 
-        log.info "updateWithLock() { $index, name: ${student.name}, status: ${student.status} }"
+        log.info "updateWithLock() { $index, name: ${student.username}, status: ${student.status} }"
 
         student.save(flush: true, failOnError: true)
         student
@@ -38,10 +38,10 @@ class StudentService {
 
             println "StudentService.updateWithTransactionLock() - index: $index, targetId: $id"
 
-            student.name = "conc-$index"
+            student.username = "conc-$index"
             student.status = index % 2 == 0 ? 0 : 1
 
-            println "updateWithTransactionLock() { $index, name: ${student.name}, status: ${student.status} }"
+            println "updateWithTransactionLock() { $index, name: ${student.username}, status: ${student.status} }"
 
             student.save(flush: true, failOnError: true)
             student

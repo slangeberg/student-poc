@@ -19,7 +19,7 @@ class StudentIntSpec extends IntegrationSpec {
 
     @Timeout(value=120, unit=TimeUnit.MILLISECONDS)
     def "can test"() {
-        Student student = new Student(name: 'test-guy', status: 1)
+        Student student = new Student(username: 'test-guy', status: 1)
         student.save(flush: true, failOnError: true)
 
         println "student.id: " + student.id
@@ -33,7 +33,7 @@ class StudentIntSpec extends IntegrationSpec {
 
     def "Concurrent update fails"() {
 
-        final Student student = new Student(name: 'test-guy', status: -1)
+        final Student student = new Student(username: 'test-guy', status: -1)
         student.save(flush: true, failOnError: true)
 
         final long targetId = student.id
@@ -54,7 +54,7 @@ class StudentIntSpec extends IntegrationSpec {
     @Timeout(value=120, unit=TimeUnit.MILLISECONDS)
     def "Concurrent update with lock"() {
 
-        final Student student = new Student(name: 'test-guy', status: -1)
+        final Student student = new Student(username: 'test-guy', status: -1)
         student.save(flush: true, failOnError: true)
 
         final long targetId = student.id
@@ -75,7 +75,7 @@ class StudentIntSpec extends IntegrationSpec {
     @Timeout(value=120, unit=TimeUnit.MILLISECONDS)
     def "Concurrent update with transaction lock"() {
 
-        final Student student = new Student(name: 'test-guy', status: -1)
+        final Student student = new Student(username: 'test-guy', status: -1)
         student.save(flush: true, failOnError: true)
 
         final long targetId = student.id
