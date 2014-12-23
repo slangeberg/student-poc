@@ -1,5 +1,6 @@
 package demo
 
+import grails.gorm.DetachedCriteria
 import grails.plugin.spock.IntegrationSpec
 import org.hibernate.criterion.CriteriaSpecification
 import spock.lang.Ignore
@@ -193,6 +194,29 @@ class StudentDomainIntSpec extends IntegrationSpec {
         s.find { it.id == student3.id }
     }
 
+    def "Can find student with profile type and item key/value pair - With Criteria"() {
+        List<Profile> p = Profile.createCriteria().list {
+            eq 'type', 'RP'
+            student {
+                survey {
+                    items {
+                        attributes {
+                            and {
+                                eq 'key', 'myKey'
+                                eq 'value', 'student3Val'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        List<Student> s = p.collect { it.student }
+
+        expect:
+        s.size() == 1
+        s.find { it.id == student3.id }
+    }
+
     def "Can find student by profile type and name"() {
         List<Profile> p = Profile.where {
             type == 'RP'
@@ -231,8 +255,15 @@ class StudentDomainIntSpec extends IntegrationSpec {
         s.find { it.id == student4.id }
     }
 
-    @Ignore("Still suffering from inner join issue as seen in original SQL!")
+//    @Ignore("Still suffering from inner join issue as seen in original SQL!")
     def "Can find student by profile type, name, and multiple item criteria"() {
+//        {
+//        key == 'aNewKey' && value == 'student4Val3'
+//        key == 'studiedHard' && value == 'false'
+//    }
+//                        attributes new DetachedCriteria(ItemAttribute).build {
+//                            eq 'key', 'studiedHard'
+//                        }
         List<Profile> p = Profile.where {
             type == 'RP'
             student {
@@ -240,8 +271,9 @@ class StudentDomainIntSpec extends IntegrationSpec {
                 survey {
                     items {
                         attributes {
-                            key == 'aNewKey' && value == 'student4Val3'
-                            key == 'studiedHard' && value == 'false'
+                            property(id).of {
+                                key == 'aNewKey' && value == 'student4Val3'
+                            }
                         }
                     }
                 }
